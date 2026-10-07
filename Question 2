@@ -1,0 +1,69 @@
+create database collegecoursemanagement;
+use collegecoursemanagement;
+
+create table faculty (
+    faculty_id int primary key,
+    faculty_name varchar(100) not null,
+    email varchar(100) not null unique,
+    department varchar(50) not null,
+    experience int default 0,
+    check (experience >= 0)
+);
+
+create table course (
+    course_id int primary key,
+    course_name varchar(100) not null,
+    credits int not null default 3,
+    department varchar(50) not null,
+    faculty_id int,
+    constraint fk_faculty
+        foreign key (faculty_id)
+        references faculty(faculty_id),
+    check (credits between 1 and 6)
+);
+
+insert into faculty
+(faculty_id, faculty_name, email, department, experience)
+values
+(101, 'dr. rajesh sharma', 'rajesh@college.edu', 'cse', 12),
+(102, 'dr. priya singh', 'priya@college.edu', 'cse', 8),
+(103, 'dr. amit verma', 'amit@college.edu', 'ece', 10),
+(104, 'dr. neha gupta', 'neha@college.edu', 'it', 6),
+(105, 'dr. rohit kumar', 'rohit@college.edu', 'ai', 7);
+
+insert into course
+(course_id, course_name, credits, department, faculty_id)
+values
+(201, 'database management systems', 4, 'cse', 101),
+(202, 'data structures', 3, 'cse', 102),
+(203, 'digital electronics', 4, 'ece', 103),
+(204, 'artificial intelligence', 3, 'ai', 105),
+(205, 'web technology', 2, 'it', 104);
+
+select *
+from course
+where credits between 2 and 4;
+
+select *
+from course
+where course_name like 'd%';
+
+select *
+from course
+where department in ('cse', 'ai');
+
+select distinct department
+from course;
+
+update course
+set faculty_id = 104
+where course_id = 204;
+
+delete from course
+where course_id = 205;
+
+alter table course
+add course_duration int default 6;
+
+select *
+from course;
